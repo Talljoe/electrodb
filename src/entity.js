@@ -3382,8 +3382,8 @@ class Entity {
           ImpactedIndexTypeSource.provided ||
           impactedIndexTypeSources[index][KeyTypes.sk] ===
             ImpactedIndexTypeSource.provided);
-      const allMemberAttributesAreIncluded = definition.all.every(
-        ({ name }) => included[name] !== undefined,
+      const allMemberAttributesAreIncluded = definition.all.every(({ name }) =>
+        includedFacets.includes(name),
       );
 
       if (memberAttributeIsImpacted || allMemberAttributesAreIncluded) {
@@ -3392,8 +3392,8 @@ class Entity {
         const missingAttributes = definition.all
           .filter(
             ({ name }) =>
-              (attributes[name] === undefined &&
-                included[name] === undefined) ||
+              (!Object.hasOwn(attributes, name) &&
+                !includedFacets.includes(name)) ||
               missing.includes(name),
           )
           .map(({ name }) => name);

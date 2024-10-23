@@ -3319,6 +3319,34 @@ describe("index condition", () => {
           expect(collector.invocations.length).to.equal(0);
         });
 
+        it(`should not throw when providing undefined set attributes on patch`, () => {
+          // this should not throw because prop4 and prop5 are supplied even though they are undefined
+          const message = undefined
+
+          expectMessageIfThrows(() => {
+            entity.patch({
+              prop1: uuid(),
+              prop2: "alice",
+            }).set({ prop3: uuid(), prop4: undefined, prop5: undefined}).params();
+          }, message);
+
+          expect(collector.invocations.length).to.equal(0);
+        });
+
+        it(`should not throw when providing undefined composite attributes on patch`, () => {
+          // this should not throw because prop4 and prop5 are supplied even though they are undefined
+          const message = undefined
+
+          expectMessageIfThrows(() => {
+            entity.patch({
+              prop1: uuid(),
+              prop2: "bob",
+            }).composite({prop4: undefined, prop5: undefined}).set({ prop3: uuid() }).params();
+          }, message);
+
+          expect(collector.invocations.length).to.equal(0);
+        });
+
         it(`${formatShouldStatement(conditionIsSet)}throw when partially providing composite attributes on upsert`, () => {
           const message = conditionIsSet
               ? 'Incomplete composite attributes provided for index gsi2pk-gsi2sk-index. Write operations that include composite attributes, for indexes with a condition callback defined, must always provide values for every index composite. This is to ensure consistency between index values and attribute values. Missing composite attributes identified: "prop3" - For more detail on this error reference: https://electrodb.dev/en/reference/errors/#invalid-index-composite-attributes-provided'

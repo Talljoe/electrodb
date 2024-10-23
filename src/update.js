@@ -17,14 +17,12 @@ class UpdateExpression extends ExpressionState {
     this.type = BuilderTypes.update;
   }
   addComposite(attrName, value) {
-    if (value !== undefined) {
-      if (
-        this.composites[attrName] === undefined ||
-        this.composites[attrName] === value
-      ) {
-        this.composites[attrName] = value;
-        return true;
-      }
+    if (
+      this.composites[attrName] === undefined ||
+      this.composites[attrName] === value
+    ) {
+      this.composites[attrName] = value;
+      return true;
     }
     return false;
   }
